@@ -1,10 +1,22 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import * as tf from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 export default function TabTwoScreen() {
+  
+  const tfready = async () => {
+    await tf.ready();
+    console.log('tf ready');
+      }
+
+  useEffect(() => {
+   tfready();
+  })
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
