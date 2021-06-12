@@ -6,7 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 
-import * as qna from '@tensorflow-models/qna'
+import * as qna from '../components/qna/qna'
 
 import Constants from 'expo-constants'
 
