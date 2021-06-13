@@ -33,18 +33,17 @@ export default class App extends Component {
   askQusetion = async () => {
 
     const answers = await this.model.findAnswers(question, passage).catch(e => console.log('My head hurts.' + e));
-    console.log(answers);
 
-   /* if (answers[0].text.length > answers[1].text.length && answers[0].text.length > answers[2].text.length) {
-      this.TTS(answers[0].text);
+   if (answers[0].text.length > answers[1].text.length && answers[0].text.length > answers[2].text.length) {
+      console.log(answers[0].text);
       this.setState({ status: answers[0].text });
     }
     else if (answers[1].text.length > answers[2].text.length) {
-      this.TTS(answers[1].text);
+      console.log(answers[1].text);
     }
     else {
-      this.TTS(answers[2].text);
-    }*/
+      console.log(answers[2].text);
+    }
   }
 
   render() {
