@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, Image, Button, View, StatusBar, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TextInput, Image, Button, View } from 'react-native'
 
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
