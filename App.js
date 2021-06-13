@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, Image, Button, View, StatusBar, ActivityIndicator, TouchableOpacity } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler';
 
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
@@ -9,9 +8,6 @@ import '@tensorflow/tfjs-react-native';
 import * as qna from '../components/qna/qna'
 import renderIf from '../components/helpers/renderIf'
 
-import Constants from 'expo-constants'
-
-const logo = require('../assets/images/tfjs.jpg');
 
 const passage = 'The wonderful world of very good programming pervades human existance.';
 const question = 'What is it about?';
