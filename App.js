@@ -1,57 +1,67 @@
+import * as React from 'react';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { SplashScreen } from 'expo';
+import * as Font from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, Image, Button, View } from 'react-native'
+import BottomTabNavigator from './navigation/BottomTabNavigator';
+import useLinking from './navigation/useLinking';
 
-import * as tf from '@tensorflow/tfjs';
-import '@tensorflow/tfjs-react-native';
+const Stack = createStackNavigator();
 
-import * as qna from './components/qna/qna'
-import renderIf from './components/helpers/renderIf'
+export default function App(props) {
+  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const [initialNavigationState, setInitialNavigationState] = React.useState();
+  const containerRef = React.useRef();
+  const { getInitialState } = useLinking(containerRef);
 
+  // Load any resources or data that we need prior to rendering the app
+  React.useEffect(() => {
+    async function loadResourcesAndDataAsync() {
+      try {
+        SplashScreen.preventAutoHide();
 
-const passage = 'The wonderful world of very good programming pervades human existance.';
-const question = 'What is it about?';
+        // Load our initial navigation state
+        setInitialNavigationState(await getInitialState());
 
-export default class App extends Component {
-
-  constructor(props) {
-    super();
-    this.state = {
-      isTfReady: false,
+        // Load fonts
+        await Font.loadAsync({
+          ...Ionicons.font,
+          'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+        });
+      } catch (e) {
+        // We might want to provide this error information to an error reporting service
+        console.warn(e);
+      } finally {
+        setLoadingComplete(true);
+        SplashScreen.hide();
+      }
     }
-  }
-  async componentDidMount() {
-    await tf.ready();
-    this.model = await qna.load().catch(e => TTS('Need to load the q n a' + e));
-    this.setState({ isTfReady: true });
-  }
 
-  askQusetion = async () => {
+    loadResourcesAndDataAsync();
+  }, []);
 
-    const answers = await this.model.findAnswers(question, passage).catch(e => console.log('My head hurts.' + e));
-
-   if (answers[0].text.length > answers[1].text.length && answers[0].text.length > answers[2].text.length) {
-      console.log(answers[0].text);
-      this.setState({ status: answers[0].text });
-    }
-    else if (answers[1].text.length > answers[2].text.length) {
-      console.log(answers[1].text);
-    }
-    else {
-      console.log(answers[2].text);
-    }
-  }
-
-  render() {
+  if (!isLoadingComplete && !props.skipLoadingScreen) {
+    return null;
+  } else {
     return (
-      <View>
-        {renderIf(this.state.isTfReady,
-          <Button
-            title='ask'
-            onPress={() => this.askQusetion()}
-          />
-        )}
+      <View style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
+          <Stack.Navigator>
+            <Stack.Screen name="Root" component={BottomTabNavigator} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </View>
-    )
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
