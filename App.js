@@ -1,57 +1,37 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { StatusBar } from 'expo-status-bar';
+import * as React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, Image, Button, View, StatusBar, ActivityIndicator, TouchableOpacity } from 'react-native'
+import useCachedResources from './hooks/useCachedResources';
+import BottomTabNavigator from './navigation/BottomTabNavigator';
+import LinkingConfiguration from './navigation/LinkingConfiguration';
 
-import * as tf from '@tensorflow/tfjs';
-import '@tensorflow/tfjs-react-native';
+const Stack = createStackNavigator();
 
-import * as qna from './components/qna/qna'
-import renderIf from './components/helpers/renderIf'
+export default function App(props) {
+  const isLoadingComplete = useCachedResources();
 
-
-const passage = 'The wonderful world of very good programming pervades human existance.';
-const question = 'What is it about?';
-
-export default class App extends Component {
-
-  constructor(props) {
-    super();
-    this.state = {
-      isTfReady: false,
-    }
-  }
-  async componentDidMount() {
-    await tf.ready();
-    this.model = await qna.load().catch(e => TTS('Need to load the q n a' + e));
-    this.setState({ isTfReady: true });
-  }
-
-  askQusetion = async () => {
-
-    const answers = await this.model.findAnswers(question, passage).catch(e => console.log('My head hurts.' + e));
-
-   if (answers[0].text.length > answers[1].text.length && answers[0].text.length > answers[2].text.length) {
-      console.log(answers[0].text);
-      this.setState({ status: answers[0].text });
-    }
-    else if (answers[1].text.length > answers[2].text.length) {
-      console.log(answers[1].text);
-    }
-    else {
-      console.log(answers[2].text);
-    }
-  }
-
-  render() {
+  if (!isLoadingComplete) {
+    return null;
+  } else {
     return (
-      <View>
-        {renderIf(this.state.isTfReady,
-          <Button
-            title='ask'
-            onPress={() => this.askQusetion()}
-          />
-        )}
+      <View style={styles.container}>
+        <NavigationContainer linking={LinkingConfiguration}>
+          <Stack.Navigator>
+            <Stack.Screen name="Root" component={BottomTabNavigator} />
+          </Stack.Navigator>
+        </NavigationContainer>
+        <StatusBar style="auto" />
       </View>
-    )
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
