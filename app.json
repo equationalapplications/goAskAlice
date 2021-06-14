@@ -17,6 +17,11 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "config": {
+        "googleMobileAdsAppId": "pub-5219337249584359"
+      }
+    },
     "ios": {
       "supportsTablet": true
     },
