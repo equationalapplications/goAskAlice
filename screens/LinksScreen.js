@@ -6,8 +6,10 @@ import { RectButton, ScrollView, TouchableNativeFeedback } from 'react-native-ge
 
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
-
 import Fuse from 'fuse.js';
+import {
+  AdMobBanner
+} from 'expo-ads-admob';
 
 import * as qna from '../components/qna/qna'
 import renderIf from '../components/helpers/renderIf'
@@ -50,7 +52,7 @@ export default class LinksScreen extends Component {
 
     const result = this.fuse.search(text);
 
-    const answers = await this.model.findAnswers(text, result[0].item.passage).catch(e => this.setState({ answer: e}));
+    const answers = await this.model.findAnswers(text, result[0].item.passage).catch(e => this.setState({ answer: e }));
 
     if (answers[0].text.length > answers[1].text.length && answers[0].text.length > answers[2].text.length) {
       this.setState({ answer: answers[0].text });
@@ -83,6 +85,12 @@ export default class LinksScreen extends Component {
           )}
           <Text></Text>
           <Text>{this.state.answer}</Text>
+        </View>
+        <View>
+          <AdMobBanner
+            bannerSize="banner"
+            adUnitID="ca-app-pub-5219337249584359/9331403147"
+           />
         </View>
       </ScrollView>
     );
