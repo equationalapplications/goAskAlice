@@ -19,6 +19,7 @@ export default class LinksScreen extends Component {
     super();
     this.state = {
       question: 'What is your question?',
+      answer: '',
       isTfReady: false,
     }
   }
@@ -49,18 +50,16 @@ export default class LinksScreen extends Component {
 
     const result = this.fuse.search(text);
 
-    const answers = await this.model.findAnswers(text, result[0].item.passage).catch(e => console.log('My head hurts.' + e));
-    //const answers = await this.model.findAnswers(text, passageJson.passage[0]).catch(e => console.log('My head hurts.' + e));
+    const answers = await this.model.findAnswers(text, result[0].item.passage).catch(e => this.setState({ answer: e}));
 
     if (answers[0].text.length > answers[1].text.length && answers[0].text.length > answers[2].text.length) {
-      console.log(answers[0].text);
-      this.setState({ status: answers[0].text });
+      this.setState({ answer: answers[0].text });
     }
     else if (answers[1].text.length > answers[2].text.length) {
-      console.log(answers[1].text);
+      this.setState({ answer: answers[1].text });
     }
     else {
-      console.log(answers[2].text);
+      this.setState({ answer: answers[2].text });
     }
   }
 
@@ -69,12 +68,11 @@ export default class LinksScreen extends Component {
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View>
           <TextInput
-            placeholder="Type here to ask!"
             onChangeText={this.onChangeText}
             value={this.state.question}
           >
-
           </TextInput>
+          <Text></Text>
           {renderIf(this.state.isTfReady,
 
             <TouchableOpacity
@@ -83,7 +81,8 @@ export default class LinksScreen extends Component {
             </TouchableOpacity>
 
           )}
-          <Text>{this.state.question}</Text>
+          <Text></Text>
+          <Text>{this.state.answer}</Text>
         </View>
       </ScrollView>
     );
