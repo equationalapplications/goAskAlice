@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import useCachedResources from './hooks/useCachedResources';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
@@ -17,14 +18,16 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        <NavigationContainer linking={LinkingConfiguration}>
-          <Stack.Navigator>
-            <Stack.Screen name="Root" component={BottomTabNavigator} />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <StatusBar style="auto" />
-      </View>
+      <PaperProvider>
+        <View style={styles.container}>
+          <NavigationContainer linking={LinkingConfiguration}>
+            <Stack.Navigator>
+              <Stack.Screen name="Root" component={BottomTabNavigator} />
+            </Stack.Navigator>
+          </NavigationContainer>
+          <StatusBar style="auto" />
+        </View>
+      </PaperProvider>
     );
   }
 }
