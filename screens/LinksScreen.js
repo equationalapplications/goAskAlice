@@ -86,11 +86,11 @@ export default class LinksScreen extends Component {
           <Text></Text>
           <Text>{this.state.answer}</Text>
         </View>
-        <View>
+        <View style={styles.adMob}>
           <AdMobBanner
             bannerSize="banner"
             adUnitID="ca-app-pub-5219337249584359/9331403147"
-           />
+          />
         </View>
       </ScrollView>
     );
@@ -99,6 +99,10 @@ export default class LinksScreen extends Component {
 
 
 const styles = StyleSheet.create({
+  adMob: {
+    marginBottom: 0,
+    justifyContent: 'flex-end',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fafafa',
