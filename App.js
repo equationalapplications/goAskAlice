@@ -11,10 +11,11 @@ import LinkingConfiguration from './navigation/LinkingConfiguration';
 
 const Stack = createStackNavigator();
 
-
+/*
 const theme = {
   dark: false,
 };
+*/
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
@@ -23,7 +24,7 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <PaperProvider theme={theme}>
+      <PaperProvider /*theme={theme}*/ >
         <View style={styles.container}>
           <NavigationContainer linking={LinkingConfiguration}>
             <Stack.Navigator>

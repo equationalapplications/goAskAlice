@@ -1,15 +1,11 @@
-//import { Ionicons } from '@expo/vector-icons';
-//import * as WebBrowser from 'expo-web-browser';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity } from 'react-native';
-import { RectButton, ScrollView, TouchableNativeFeedback } from 'react-native-gesture-handler';
-
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-paper';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 import Fuse from 'fuse.js';
-import {
-  AdMobBanner
-} from 'expo-ads-admob';
+import { AdMobBanner } from 'expo-ads-admob';
 
 import * as qna from '../components/qna/qna'
 import renderIf from '../components/helpers/renderIf'
@@ -20,7 +16,7 @@ export default class LinksScreen extends Component {
   constructor(props) {
     super();
     this.state = {
-      question: 'What is your question?',
+      question: '',
       answer: '',
       isTfReady: false,
     }
@@ -70,10 +66,10 @@ export default class LinksScreen extends Component {
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <View>
           <TextInput
-            onChangeText={this.onChangeText}
+            label="Ask a question"
             value={this.state.question}
-          >
-          </TextInput>
+            onChangeText={this.onChangeText}
+          />
           <Text></Text>
           {renderIf(this.state.isTfReady,
 
